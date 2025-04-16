@@ -36,7 +36,7 @@ function getRandomDate() {
   const year = Math.floor(Math.random() * 40) + 1980;
   const month = String(Math.floor(Math.random() * 12) + 1).padStart(2, "0");
   const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, "0");
-  return \`\${year}-\${month}-\${day}\`;
+  return `${year}-${month}-${day}`;
 }
 async function generateTimeline(inputDate) {
   const date = inputDate || document.getElementById("birthdate").value;
@@ -53,46 +53,46 @@ async function generateTimeline(inputDate) {
   timelineEvents.forEach(event => {
     const card = document.createElement("div");
     card.className = "card";
-    card.innerHTML = \`
+    card.innerHTML = `
       <h3>${event.year}</h3>
       <p>${event.text}</p>
       <a href="https://en.wikipedia.org/wiki/${event.pages[0].normalizedtitle}" target="_blank">Learn more</a>
-    \`;
+    `;
     results.appendChild(card);
   });
 
   const nasaImg = await fetchNasaImage(date);
   const nasaCard = document.createElement("div");
   nasaCard.className = "card";
-  nasaCard.innerHTML = \`
+  nasaCard.innerHTML = `
     <h3>Astronomy Picture on Your Birthday</h3>
-    <img src="\${nasaImg.url}" alt="NASA Image" style="width:100%; border-radius:10px;" />
-    <p>\${nasaImg.title}</p>
-  \`;
+    <img src="${nasaImg.url}" alt="NASA Image" style="width:100%; border-radius:10px;" />
+    <p>${nasaImg.title}</p>
+  `;
   results.appendChild(nasaCard);
 
   const quote = await fetchQuote();
   const quoteCard = document.createElement("div");
   quoteCard.className = "card";
-  quoteCard.innerHTML = \`<h3>Inspirational Quote</h3><p>\${quote}</p>\`;
+  quoteCard.innerHTML = `<h3>Inspirational Quote</h3><p>${quote}</p>`;
   results.appendChild(quoteCard);
 
   const kanye = await fetchKanyeQuote();
   const kanyeCard = document.createElement("div");
   kanyeCard.className = "card";
-  kanyeCard.innerHTML = \`<h3>Kanye Quote</h3><p>"\${kanye}"</p>\`;
+  kanyeCard.innerHTML = `<h3>Kanye Quote</h3><p>"${kanye}"</p>`;
   results.appendChild(kanyeCard);
 
   const advice = await fetchAdvice();
   const adviceCard = document.createElement("div");
   adviceCard.className = "card";
-  adviceCard.innerHTML = \`<h3>Birthday Advice</h3><p>"\${advice}"</p>\`;
+  adviceCard.innerHTML = `<h3>Birthday Advice</h3><p>"${advice}"</p>`;
   results.appendChild(adviceCard);
 
   const theme = getThemeFromEvents(events);
   const themeCard = document.createElement("div");
   themeCard.className = "card";
-  themeCard.innerHTML = \`<h3>Life Theme: \${theme}</h3><p>What might your presence in history symbolize?</p>\`;
+  themeCard.innerHTML = `<h3>Life Theme: ${theme}</h3><p>What might your presence in history symbolize?</p>`;
   results.appendChild(themeCard);
 }
 function generateRandomTimeline() {
