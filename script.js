@@ -1,42 +1,94 @@
 async function fetchWikipediaEvents(month, day) {
   const url = `https://en.wikipedia.org/api/rest_v1/feed/onthisday/events/${month}/${day}`;
-  const response = await fetch(url);
-  const data = await response.json();
+  const res = await fetch(url);
+  const data = await res.json();
   return data.events;
 }
 
-async function generateTimeline() {
-  const date = document.getElementById("birthdate").value;
-  if (!date) return alert("Please enter a date.");
+async function fetchNasaImage(date) {
+  const url = `https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=${date}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  return data;
+}
 
-  const [year, month, day] = date.split("-");
-  const results = document.getElementById("results");
-  results.innerHTML = "";
+async function fetchAdvice() {
+  const res = await fetch("https://api.adviceslip.com/advice");
+  const data = await res.json();
+  return data.slip.advice;
+}
 
-  const events = await fetchWikipediaEvents(parseInt(month), parseInt(day));
+async function fetchKanyeQuote() {
+  const res = await fetch("https://api.kanye.rest");
+  const data = await res.json();
+  return data.quote;
+}
 
-  events.slice(0, 6).forEach(event => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <h3>${event.year}</h3>
-      <h4>${event.text}</h4>
-      <a href="https://en.wikipedia.org/wiki/${event.pages[0].normalizedtitle}" target="_blank">Read more</a>
-    `;
-    results.appendChild(card);
-  });
-
-  addShareButtons();
+async function fetchQuote() {
+  const res = await fetch("https://api.quotable.io/random?tags=wisdom|inspirational");
+  const data = await res.json();
+  return `${data.content} — ${data.author}`;
 }
 
 function addShareButtons() {
   const results = document.getElementById("results");
   const shareDiv = document.createElement("div");
   shareDiv.className = "share-buttons";
-  shareDiv.innerHTML = `
+  shareDiv.innerHTML = \`
     <h4>Share your day:</h4>
     <a href="https://twitter.com/intent/tweet?text=Look what happened on my birthday!&url=https://yourusername.github.io/yourday-explorer" target="_blank">Share on Twitter</a>
     <a href="https://www.facebook.com/sharer/sharer.php?u=https://yourusername.github.io/yourday-explorer" target="_blank">Share on Facebook</a>
-  `;
+  \`;
   results.appendChild(shareDiv);
+}
+
+async function generateTimeline() {
+  const date = document.getElementById("birthdate").value;
+  if (!date) return alert("Please enter a date.");
+  const [year, month, day] = date.split("-");
+  const results = document.getElementById("results");
+  results.innerHTML = "";
+
+  const events = await fetchWikipediaEvents(parseInt(month), parseInt(day));
+  events.slice(0, 5).forEach(event => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = \`
+      <h3>${event.year}</h3>
+      <p>${event.text}</p>
+      <a href="https://en.wikipedia.org/wiki/${event.pages[0].normalizedtitle}" target="_blank">Learn more</a>
+    \`;
+    results.appendChild(card);
+  });
+
+  const nasaImg = await fetchNasaImage(date);
+  const nasaCard = document.createElement("div");
+  nasaCard.className = "card";
+  nasaCard.innerHTML = \`
+    <h3>Astronomy Picture on Your Birthday</h3>
+    <img src="${nasaImg.url}" alt="NASA Image" style="width:100%; border-radius:10px;" />
+    <p>${nasaImg.title}: ${nasaImg.explanation.slice(0, 120)}...</p>
+    <a href="${nasaImg.hdurl}" target="_blank">See Full Image</a>
+  \`;
+  results.appendChild(nasaCard);
+
+  const advice = await fetchAdvice();
+  const adviceCard = document.createElement("div");
+  adviceCard.className = "card";
+  adviceCard.innerHTML = \`<h3>Birthday Advice</h3><p>"${advice}"</p>\`;
+  results.appendChild(adviceCard);
+
+  const kanye = await fetchKanyeQuote();
+  const kanyeCard = document.createElement("div");
+  kanyeCard.className = "card";
+  kanyeCard.innerHTML = \`<h3>Kanye Quote</h3><p>"${kanye}"</p>\`;
+  results.appendChild(kanyeCard);
+
+  const quote = await fetchQuote();
+  const quoteCard = document.createElement("div");
+  quoteCard.className = "card";
+  quoteCard.innerHTML = \`<h3>Inspirational Quote</h3><p>${quote}</p>\`;
+  results.appendChild(quoteCard);
+
+  addShareButtons();
 }
