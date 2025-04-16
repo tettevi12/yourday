@@ -53,3 +53,15 @@ main {
   margin-top: 0;
   color: #a0522d;
 }
+
+.share-buttons {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.share-buttons a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #d2691e;
+  font-weight: bold;
+}
