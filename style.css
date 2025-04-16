@@ -4,24 +4,20 @@ body {
   background-color: #fff7f0;
   color: #333;
 }
-
 header {
   background-color: #fce5cd;
   padding: 2rem;
   text-align: center;
 }
-
 .input-section {
   padding: 1rem 2rem;
   text-align: center;
 }
-
 input[type="date"] {
   padding: 0.5rem;
   font-size: 1rem;
   margin: 0.5rem;
 }
-
 button {
   padding: 0.6rem 1.2rem;
   margin: 0.3rem;
@@ -31,25 +27,21 @@ button {
   cursor: pointer;
   border-radius: 5px;
 }
-
 button:hover {
   background-color: #b47c52;
 }
-
 main {
   padding: 2rem;
   display: grid;
   gap: 1.5rem;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
-
 .card {
   background-color: #fff;
   padding: 1rem;
   border-radius: 10px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
-
 .card h3 {
   margin-top: 0;
   color: #a0522d;

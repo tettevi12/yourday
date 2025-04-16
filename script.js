@@ -1,44 +1,30 @@
-const NEWS_API_KEY = "064d1e3c8c1e4daa8e44414e977a5ba2";
-
 async function fetchWikipediaEvents(month, day) {
   const url = `https://en.wikipedia.org/api/rest_v1/feed/onthisday/events/${month}/${day}`;
   const res = await fetch(url);
   const data = await res.json();
   return data.events;
 }
-
-async function fetchNews(date) {
-  const url = `https://newsapi.org/v2/everything?q=world&from=${date}&to=${date}&sortBy=popularity&apiKey=${NEWS_API_KEY}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  return data.articles;
-}
-
 async function fetchNasaImage(date) {
   const url = `https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=${date}`;
   const res = await fetch(url);
   const data = await res.json();
   return data;
 }
-
 async function fetchQuote() {
   const res = await fetch("https://api.quotable.io/random?tags=wisdom|inspirational");
   const data = await res.json();
   return `${data.content} — ${data.author}`;
 }
-
 async function fetchKanyeQuote() {
   const res = await fetch("https://api.kanye.rest");
   const data = await res.json();
   return data.quote;
 }
-
 async function fetchAdvice() {
   const res = await fetch("https://api.adviceslip.com/advice");
   const data = await res.json();
   return data.slip.advice;
 }
-
 function getThemeFromEvents(events) {
   const keywords = events.map(e => e.text.toLowerCase());
   if (keywords.some(text => text.includes("peace") || text.includes("treaty"))) return "Peacemaker";
@@ -46,14 +32,12 @@ function getThemeFromEvents(events) {
   if (keywords.some(text => text.includes("war") || text.includes("conflict"))) return "Warrior Spirit";
   return "Time Traveler";
 }
-
 function getRandomDate() {
   const year = Math.floor(Math.random() * 40) + 1980;
   const month = String(Math.floor(Math.random() * 12) + 1).padStart(2, "0");
   const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, "0");
   return \`\${year}-\${month}-\${day}\`;
 }
-
 async function generateTimeline(inputDate) {
   const date = inputDate || document.getElementById("birthdate").value;
   if (!date) return alert("Please enter a date.");
@@ -64,7 +48,6 @@ async function generateTimeline(inputDate) {
   const events = await fetchWikipediaEvents(parseInt(month), parseInt(day));
   const matchedEvents = events.filter(e => e.year == year);
   const otherEvents = events.filter(e => e.year != year);
-
   const timelineEvents = [...matchedEvents, ...otherEvents.slice(0, 5 - matchedEvents.length)];
 
   timelineEvents.forEach(event => {
@@ -77,16 +60,6 @@ async function generateTimeline(inputDate) {
     \`;
     results.appendChild(card);
   });
-
-  const news = await fetchNews(date);
-  if (news.length > 0) {
-    const newsCard = document.createElement("div");
-    newsCard.className = "card";
-    newsCard.innerHTML = \`<h3>Top News on Your Birthday</h3>\` + news.slice(0, 3).map(n =>
-      \`<p><a href="\${n.url}" target="_blank">\${n.title}</a></p>\`
-    ).join("");
-    results.appendChild(newsCard);
-  }
 
   const nasaImg = await fetchNasaImage(date);
   const nasaCard = document.createElement("div");
@@ -122,7 +95,6 @@ async function generateTimeline(inputDate) {
   themeCard.innerHTML = \`<h3>Life Theme: \${theme}</h3><p>What might your presence in history symbolize?</p>\`;
   results.appendChild(themeCard);
 }
-
 function generateRandomTimeline() {
   const randomDate = getRandomDate();
   document.getElementById("birthdate").value = randomDate;
