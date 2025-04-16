@@ -16,7 +16,7 @@ header {
   text-align: center;
 }
 
-input[type="date"], select {
+input[type="date"] {
   padding: 0.5rem;
   font-size: 1rem;
   margin: 0.5rem;
@@ -40,7 +40,7 @@ main {
   padding: 2rem;
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
 .card {
@@ -53,28 +53,4 @@ main {
 .card h3 {
   margin-top: 0;
   color: #a0522d;
-}
-
-.share-buttons {
-  text-align: center;
-  margin-top: 2rem;
-}
-
-.share-buttons a {
-  margin: 0 10px;
-  text-decoration: none;
-  color: #d2691e;
-  font-weight: bold;
-}
-
-@media (max-width: 600px) {
-  header h1 {
-    font-size: 1.5rem;
-  }
-
-  button, input, select {
-    width: 90%;
-    margin: 0.3rem auto;
-    display: block;
-  }
 }
