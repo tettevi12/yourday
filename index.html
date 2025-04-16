@@ -16,6 +16,18 @@
     <label for="birthdate">Enter your birthdate:</label>
     <input type="date" id="birthdate" />
     <button onclick="generateTimeline()">Explore My Day</button>
+    <button onclick="generateRandomTimeline()">Surprise Me</button>
+
+    <div class="alternate-year">
+      <label for="alternateYear">What if you were born in:</label>
+      <select id="alternateYear" onchange="generateAlternateYearTimeline()">
+        <option value="">--Select a Year--</option>
+        <option value="1980">1980</option>
+        <option value="1990">1990</option>
+        <option value="2000">2000</option>
+        <option value="2010">2010</option>
+      </select>
+    </div>
   </section>
 
   <main id="results"></main>
