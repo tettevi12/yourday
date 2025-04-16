@@ -7,18 +7,22 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="landing-container">
+  <header>
     <h1>YourDay Explorer</h1>
-    <p class="subtitle">Discover what made your birthday special—globally, historically, culturally.</p>
+    <p>Discover what made your birthday special — globally, historically, culturally.</p>
+  </header>
+
+  <section class="input-section">
     <input type="date" id="birthdate" />
     <div class="button-group">
       <button onclick="generateTimeline()">Explore My Day</button>
       <button onclick="generateRandomTimeline()">Surprise Me</button>
     </div>
-    <div id="results" class="results-grid"></div>
-  </main>
+  </section>
 
-  <footer class="footer">
+  <main id="results"></main>
+
+  <footer>
     &copy; 2025 YourDay Explorer — Powered by Wikipedia, NASA, Quotable, NewsAPI, and more.
   </footer>
 

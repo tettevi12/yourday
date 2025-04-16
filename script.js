@@ -4,39 +4,33 @@ async function fetchWikipediaEvents(month, day) {
   const data = await res.json();
   return data.events;
 }
-
 async function fetchNews(date) {
   const url = `https://newsapi.org/v2/everything?q=birthday&from=${date}&to=${date}&sortBy=popularity&apiKey=${CONFIG.NEWS_API_KEY}`;
   const res = await fetch(url);
   const data = await res.json();
   return data.articles || [];
 }
-
 async function fetchNasaImage(date) {
   const url = `https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=${date}`;
   const res = await fetch(url);
   const data = await res.json();
   return data;
 }
-
 async function fetchQuote() {
   const res = await fetch("https://api.quotable.io/random?tags=wisdom|inspirational");
   const data = await res.json();
   return `${data.content} — ${data.author}`;
 }
-
 async function fetchKanyeQuote() {
   const res = await fetch("https://api.kanye.rest");
   const data = await res.json();
   return data.quote;
 }
-
 async function fetchAdvice() {
   const res = await fetch("https://api.adviceslip.com/advice");
   const data = await res.json();
   return data.slip.advice;
 }
-
 function getThemeFromEvents(events) {
   const keywords = events.map(e => e.text.toLowerCase());
   if (keywords.some(text => text.includes("peace") || text.includes("treaty"))) return "Peacemaker";
@@ -44,14 +38,12 @@ function getThemeFromEvents(events) {
   if (keywords.some(text => text.includes("war") || text.includes("conflict"))) return "Warrior Spirit";
   return "Time Traveler";
 }
-
 function getRandomDate() {
   const year = Math.floor(Math.random() * 40) + 1980;
   const month = String(Math.floor(Math.random() * 12) + 1).padStart(2, "0");
   const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
-
 async function generateTimeline(inputDate) {
   const date = inputDate || document.getElementById("birthdate").value;
   if (!date) return alert("Please enter a date.");
@@ -126,7 +118,6 @@ async function generateTimeline(inputDate) {
   themeCard.innerHTML = `<h3>Life Theme: ${theme}</h3><p>What might your presence in history symbolize?</p>`;
   results.appendChild(themeCard);
 }
-
 function generateRandomTimeline() {
   const randomDate = getRandomDate();
   document.getElementById("birthdate").value = randomDate;
