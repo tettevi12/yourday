@@ -41,12 +41,14 @@ header h1 {
   background-color: #b47c52;
 }
 main {
+  column-count: 2;
+  column-gap: 1.5rem;
   padding: 2rem;
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 .card {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 1.5rem;
   background-color: #fff;
   padding: 1rem;
   border-radius: 10px;
