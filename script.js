@@ -4,46 +4,21 @@ async function fetchWikipediaEvents(month, day) {
   const data = await res.json();
   return data.events;
 }
-async function fetchNews(date) {
-  const url = `https://newsapi.org/v2/everything?q=birthday&from=${date}&to=${date}&sortBy=popularity&apiKey=${CONFIG.NEWS_API_KEY}`;
+
+async function fetchGoogleSearch(query) {
+  const url = `https://www.googleapis.com/customsearch/v1?key=${CONFIG.GOOGLE_API_KEY}&cx=${CONFIG.GOOGLE_CX}&q=${query}`;
   const res = await fetch(url);
   const data = await res.json();
-  return data.articles || [];
+  return data.items || [];
 }
-async function fetchNasaImage(date) {
-  const url = `https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=${date}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  return data;
-}
-async function fetchQuote() {
-  const res = await fetch("https://api.quotable.io/random?tags=wisdom|inspirational");
-  const data = await res.json();
-  return `${data.content} — ${data.author}`;
-}
-async function fetchKanyeQuote() {
-  const res = await fetch("https://api.kanye.rest");
-  const data = await res.json();
-  return data.quote;
-}
-async function fetchAdvice() {
-  const res = await fetch("https://api.adviceslip.com/advice");
-  const data = await res.json();
-  return data.slip.advice;
-}
-function getThemeFromEvents(events) {
-  const keywords = events.map(e => e.text.toLowerCase());
-  if (keywords.some(text => text.includes("peace") || text.includes("treaty"))) return "Peacemaker";
-  if (keywords.some(text => text.includes("science") || text.includes("discovery"))) return "Innovator";
-  if (keywords.some(text => text.includes("war") || text.includes("conflict"))) return "Warrior Spirit";
-  return "Time Traveler";
-}
+
 function getRandomDate() {
   const year = Math.floor(Math.random() * 40) + 1980;
   const month = String(Math.floor(Math.random() * 12) + 1).padStart(2, "0");
   const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
+
 async function generateTimeline(inputDate) {
   const date = inputDate || document.getElementById("birthdate").value;
   if (!date) return alert("Please enter a date.");
@@ -74,50 +49,17 @@ async function generateTimeline(inputDate) {
     results.appendChild(card);
   });
 
-  const news = await fetchNews(date);
-  if (news.length > 0) {
-    const newsCard = document.createElement("div");
-    newsCard.className = "card";
-    newsCard.innerHTML = `<h3>Top News on Your Birthday</h3>` + news.slice(0, 3).map(n =>
-      `<p><a href="${n.url}" target="_blank">${n.title}</a></p>`
+  const googleResults = await fetchGoogleSearch(`events on ${month}/${day}/${year}`);
+  if (googleResults.length > 0) {
+    const googleCard = document.createElement("div");
+    googleCard.className = "card";
+    googleCard.innerHTML = "<h3>🔎 Google Search Results</h3>" + googleResults.slice(0, 3).map(item =>
+      `<p><a href="${item.link}" target="_blank">${item.title}</a></p>`
     ).join("");
-    results.appendChild(newsCard);
+    results.appendChild(googleCard);
   }
-
-  const nasaImg = await fetchNasaImage(date);
-  const nasaCard = document.createElement("div");
-  nasaCard.className = "card";
-  nasaCard.innerHTML = `
-    <h3>Astronomy Picture on Your Birthday</h3>
-    <img src="${nasaImg.url}" alt="NASA Image" style="width:100%; border-radius:10px;" />
-    <p>${nasaImg.title}</p>
-  `;
-  results.appendChild(nasaCard);
-
-  const quote = await fetchQuote();
-  const quoteCard = document.createElement("div");
-  quoteCard.className = "card";
-  quoteCard.innerHTML = `<h3>Inspirational Quote</h3><p>${quote}</p>`;
-  results.appendChild(quoteCard);
-
-  const kanye = await fetchKanyeQuote();
-  const kanyeCard = document.createElement("div");
-  kanyeCard.className = "card";
-  kanyeCard.innerHTML = `<h3>Kanye Quote</h3><p>"${kanye}"</p>`;
-  results.appendChild(kanyeCard);
-
-  const advice = await fetchAdvice();
-  const adviceCard = document.createElement("div");
-  adviceCard.className = "card";
-  adviceCard.innerHTML = `<h3>Birthday Advice</h3><p>"${advice}"</p>`;
-  results.appendChild(adviceCard);
-
-  const theme = getThemeFromEvents(events);
-  const themeCard = document.createElement("div");
-  themeCard.className = "card";
-  themeCard.innerHTML = `<h3>Life Theme: ${theme}</h3><p>What might your presence in history symbolize?</p>`;
-  results.appendChild(themeCard);
 }
+
 function generateRandomTimeline() {
   const randomDate = getRandomDate();
   document.getElementById("birthdate").value = randomDate;
