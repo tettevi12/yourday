@@ -50,14 +50,24 @@ async function generateTimeline(inputDate) {
   });
 
   const googleResults = await fetchGoogleSearch(`events on ${month}/${day}/${year}`);
-  if (googleResults.length > 0) {
-    const googleCard = document.createElement("div");
-    googleCard.className = "card";
-    googleCard.innerHTML = "<h3>🔎 Google Search Results</h3>" + googleResults.slice(0, 3).map(item =>
-      `<p><a href="${item.link}" target="_blank">${item.title}</a></p>`
-    ).join("");
-    results.appendChild(googleCard);
-  }
+  googleResults.slice(0, 5).forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    let imageHtml = "";
+    if (item.pagemap && item.pagemap.cse_image && item.pagemap.cse_image.length > 0) {
+      imageHtml = `<img src="${item.pagemap.cse_image[0].src}" alt="Preview" style="width:100%; max-height:180px; object-fit:cover; border-radius:8px;" />`;
+    }
+
+    card.innerHTML = `
+      <h4>🔍 From the Web</h4>
+      ${imageHtml}
+      <h3>${item.title}</h3>
+      <p>${item.snippet}</p>
+      <a href="${item.link}" target="_blank">Read more</a>
+    `;
+    results.appendChild(card);
+  });
 }
 
 function generateRandomTimeline() {
